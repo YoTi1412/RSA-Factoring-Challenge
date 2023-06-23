@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+import sys
+import time
+
+def gcd(a, b):
+    """Returns the greatest common divisor of a and b."""
+    while b:
+        a, b = b, a % b
+    return a
+
+def pollard_rho(n):
+    """Pollard's rho algorithm for prime factorization."""
+    x = 2
+    y = 2
+    d = 1
+
+    f = lambda x: (x**2 + 1) % n
+
+    while d == 1:
+        x = f(x)
+        y = f(f(y))
+        d = gcd(abs(x - y), n)
+
+    return d
+
+def factorize_number(n):
+    """
+    Factorizes a given number into prime factors.
+    Returns a list of prime factors.
+    """
+    factors = []
+    while n > 1:
+        factor = pollard_rho(n)
+        factors.append(factor)
+        n //= factor
+    return factors
+
+def factorize_file(filename):
+    """
+    Factorizes the number from a given file into prime factors.
+    Prints the factorization result.
+    """
+    with open(filename, 'r') as file:
+        number = int(file.readline().strip())
+        factors = factorize_number(number)
+        prime_factors = [str(factor) for factor in factors]
+        prime_factors_str = "*".join(prime_factors)
+        print(f"{number}={prime_factors_str}")
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: rsa <file>")
+    else:
+        file_path = sys.argv[1]
+
+        start_time = time.time()
+
+        # Print the factorization result
+        factorize_file(file_path)
+
+        elapsed_time = time.time() - start_time
+
+        # Print the time output
+        print(f"\nreal\t{elapsed_time:.3f}s")
+        print(f"user\t{elapsed_time:.3f}s")
+        print(f"sys\t{elapsed_time:.3f}s")
+
