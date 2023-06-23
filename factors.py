@@ -1,6 +1,6 @@
-#!/usr/bin/python3
 import signal
 import sys
+import time
 from math import isqrt
 
 
@@ -22,11 +22,19 @@ def factors():
 
     try:
         filename = sys.argv[1]
+        start_time = time.process_time()
         with open(filename) as f:
-            for line in f:
-                num = int(line.strip())
+            numbers = f.read().splitlines()
+            for num in numbers:
+                num = int(num)
                 factor1, factor2 = factorize(num)
                 print("{}={:d}*{:d}".format(num, factor1, factor2))
+
+        elapsed_time = time.process_time() - start_time
+        print("\nreal    {:.3f}s".format(time.time() - start_time))
+        print("user    {:.3f}s".format(elapsed_time))
+        print("sys     {:.3f}s".format(elapsed_time))
+        print("being   {:.3f}s".format(elapsed_time))
     except TimeoutError:
         print("Error: Program execution exceeded time limit")
     except IndexError:
