@@ -35,17 +35,19 @@ if __name__ == '__main__':
     else:
         file_path = sys.argv[1]
 
-        start_time = time.time()
-        start_user_time, start_sys_time = resource.getrusage(resource.RUSAGE_SELF).ru_utime, resource.getrusage(resource.RUSAGE_SELF).ru_stime
+        if sys.argv[0].startswith('time'):
+            start_time = time.time()
+            start_user_time, start_sys_time = resource.getrusage(resource.RUSAGE_SELF).ru_utime, resource.getrusage(resource.RUSAGE_SELF).ru_stime
 
         # Print the factorization results
         factorize_file(file_path)
 
-        elapsed_time = time.time() - start_time
-        elapsed_user_time = resource.getrusage(resource.RUSAGE_SELF).ru_utime - start_user_time
-        elapsed_sys_time = resource.getrusage(resource.RUSAGE_SELF).ru_stime - start_sys_time
+        if sys.argv[0].startswith('time'):
+            elapsed_time = time.time() - start_time
+            elapsed_user_time = resource.getrusage(resource.RUSAGE_SELF).ru_utime - start_user_time
+            elapsed_sys_time = resource.getrusage(resource.RUSAGE_SELF).ru_stime - start_sys_time
 
-        # Print the time output
-        print(f"real\t{elapsed_time:.3f}s")
-        print(f"user\t{elapsed_user_time:.3f}s")
-        print(f"sys\t{elapsed_sys_time:.3f}s")
+            # Print the time output
+            print(f"real\t{elapsed_time:.3f}s")
+            print(f"user\t{elapsed_user_time:.3f}s")
+            print(f"sys\t{elapsed_sys_time:.3f}s")
