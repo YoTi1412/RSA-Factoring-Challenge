@@ -14,16 +14,16 @@ def factorize(value):
         i += 1
     print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
 
+
 if len(argv) != 2:
     exit()
 
 try:
     with open(argv[1]) as file:
-        line = file.readline()
-
-        while line != "":
-            value = int(line.split('\n')[0])
-            factorize(value)
-            line = file.readline()
+        for line in file:
+            line = line.strip()  # Remove leading/trailing whitespace
+            if line:  # Skip empty lines
+                value = int(line)
+                factorize(value)
 except:
     pass
